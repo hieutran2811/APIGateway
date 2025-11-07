@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 spring:
   application:
@@ -10,28 +10,18 @@ spring:
         webflux:
           discovery:
             locator:
-              enabled: true
-              lowercase-service-id: true
+              enabled: false
           default-filters:
             - name: AddResponseHeader
               args:
                 name: X-Gateway
                 value: SpringCloudGateway
           routes:
-            - id: user-service
-              uri: lb://user-service
+            - id: back-end
+              uri: http://localhost:8080
               predicates:
-                - Path=/api/users/**
-            - id: order-service
-              uri: lb://order-service
+                - Path=/api/**
+            - id: EBReport
+              uri: http://localhost:8082
               predicates:
-                - Path=/api/orders/**
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-    register-with-eureka: true
-    fetch-registry: true
-  instance:
-    prefer-ip-address: true
+                - Path=/report-tool/**
